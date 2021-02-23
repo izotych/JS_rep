@@ -1,0 +1,50 @@
+function calculateWinners(snapshot, penguins) {
+    //функция сравнения
+    function compareNumbers(a, b) {
+        return a[1] - b[1];
+    }
+  
+    let raceMap = snapshot.split('\n');
+    let findPenguin = false;
+    let distance = 0;
+    let distanceArr = [];
+    let winners = [];
+    let medals = ['GOLD', 'SILVER', 'BRONZE'];
+    let congratulations = '';
+
+    for (track of raceMap) {
+        //ОБХОД ОСНОВНОГО МАССИВА
+        distance = 0;
+        findPenguin = false;
+
+        for (step of track) {
+            //ОБХОД ЭЛЕМЕНТОВ МАССИВА
+            if (step == 'p' || step == 'P') {
+                findPenguin = true;
+            }
+            if (findPenguin == true){
+                if (step == '-') {
+                    distance += 1;
+                }
+                if (step == '~') {
+                    distance += 2;
+                }
+            }
+        }   
+        distanceArr.push(distance);
+    }
+    // Выяснение призовых мест
+    for (let i = 0; i < penguins.length; i++) {
+        winners.push([penguins[i], distanceArr[i]]);
+    }
+    winners.sort(compareNumbers);
+    for (let i = 0; i < 3; i++) {
+        if (i != 2){
+        congratulations += medals[i] + ': ' + winners[i][0] + ', ';
+        }
+        else {
+            congratulations += medals[i] + ': ' + winners[i][0];
+        }
+    }
+   return congratulations;
+}
